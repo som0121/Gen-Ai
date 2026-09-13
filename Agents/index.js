@@ -149,15 +149,7 @@ async function runAgent(userProblem){
                 },
             };
 
-            History.push({
-
-                role: "model",
-                parts: [
-                    {
-                        functionCall: response.functionCall[0],
-                    },
-                ],
-            });
+            History.push(response.candidates[0].content);
 
             History.push({
                 role: "user",
@@ -188,7 +180,6 @@ async function main(){
 
    const userProblem = readlineSync.question("Ask me anything--");
    await runAgent(userProblem);
-   main();
 }
 
 main();

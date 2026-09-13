@@ -126,6 +126,13 @@ async function runAgent(userProblem){
 
             config:{
 
+                systemInstruction: `You are an AI agent, You have access of 3 available tools like to
+                find sum of 2 number, get crypto price of any currency and find a number is prime or not
+                and the sum of two numbers 
+                
+                use these tools whenever required to confirm user query.
+                if user ask general question you can answer it directly if you don't need help of these three tools`,
+
             tools: [ {
 
                 functionDeclarations: [sumDeclaration,primeDeclaration,cryptoDeclaration]
@@ -135,6 +142,8 @@ async function runAgent(userProblem){
         });
 
         if(response.functionCalls&&response.functionCalls.length>0){
+
+            console.log(response.functionCalls[0]);
 
             const{name,args} = response.functionCalls[0];
 

@@ -11,7 +11,7 @@ async function indexDocument(){
    
     // load pdf
 
-    const PDF_PATH = './rag.pdf';
+    const PDF_PATH = './dsa-mini.pdf';
     const pdfLoader = new PDFLoader(PDF_PATH);
     const rawDocs = await pdfLoader.load();
     console.log("PDF loaded");

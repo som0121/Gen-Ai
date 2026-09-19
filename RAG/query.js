@@ -9,9 +9,35 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({});
 const History = []
 
+async function transformQuery(question){
+
+History.push({
+    role:'user',
+    parts:[{text:question}]
+    })  
+
+const response = await ai.models.generateContent({
+    model: "gemini-3.6-flash",
+    contents: History,
+    config: {
+      systemInstruction: `You are a query rewriting expert. Based on the provided chat history, rephrase the "Follow Up user Question" into a complete, standalone question that can be understood without the chat history.
+    Only output the rewritten question and nothing else.
+      `,
+    },
+ });
+ 
+ History.pop()
+ 
+ return response.text
+
+
+}
+
 async function chatting(question) {
 
     //convert this question to the vector data
+
+    const queries = await transformQuery(question);
 
     const embeddings = new GoogleGenerativeAIEmbeddings({
     apiKey: process.env.GEMINI_API_KEY,
@@ -47,7 +73,7 @@ async function chatting(question) {
 
     History.push({
         role: 'user',
-        parts: [{text:question}]
+        parts: [{text:queries}]
     })
 
     const response = await ai.models.generateContent({
